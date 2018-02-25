@@ -323,7 +323,7 @@ class Member(models.Model):
         verbose_name = _('member')
         verbose_name_plural = _('members')
 
-    person = models.OneToOneField(Person, primary_key=True)
+    person = models.OneToOneField(Person, primary_key=True, on_delete=models.CASCADE)
 
     date_from = models.DateField(_('date from'), blank=True, null=True)
     date_to = models.DateField(_('date to'), blank=True, null=True)
@@ -404,7 +404,7 @@ class Student(models.Model):
         verbose_name = _('student')
         verbose_name_plural = _('students')
 
-    person = models.OneToOneField(Person, primary_key=True)
+    person = models.OneToOneField(Person, primary_key=True, on_delete=models.CASCADE)
 
     enrolled = models.BooleanField(_('enrolled'), default=True)
     study = models.CharField(_('study'), max_length=50)
@@ -433,7 +433,7 @@ class Alumnus(models.Model):
         verbose_name = _('alumnus')
         verbose_name_plural = _('alumni')
 
-    person = models.OneToOneField(Person, primary_key=True)
+    person = models.OneToOneField(Person, primary_key=True, on_delete=models.CASCADE)
 
     study = models.CharField(_('study'), max_length=100, blank=True)
     study_first_year = models.IntegerField(_('study first year'), blank=True, null=True)
@@ -458,7 +458,7 @@ class Employee(models.Model):
         verbose_name = _('employee')
         verbose_name_plural = _('employees')
 
-    person = models.OneToOneField(Person, primary_key=True)
+    person = models.OneToOneField(Person, primary_key=True, on_delete=models.CASCADE)
 
     faculty = models.CharField(_('faculty'), max_length=50)
     department = models.CharField(_('department'), max_length=50)
@@ -493,8 +493,8 @@ class CommitteeMembership(models.Model):
 
     # Django admin doesn't support nested inlines,
     # so we'll just link to Person instead.
-    person = models.ForeignKey(Person, related_name="committee_memberships")
-    committee = models.ForeignKey(Committee)
+    person = models.ForeignKey(Person, related_name="committee_memberships", on_delete=models.CASCADE)
+    committee = models.ForeignKey(Committee, on_delete=models.CASCADE)
     board = models.IntegerField(_('board'))
     position = models.CharField(_('position'), max_length=50, blank=True)
     ras_months = models.IntegerField(_('RAS months'), blank=True, null=True)
@@ -509,7 +509,7 @@ class Modification(models.Model):
         verbose_name = _('modification')
         verbose_name_plural = _('modifications')
 
-    person = models.ForeignKey(Person)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     date = models.DateTimeField(_('date'), auto_now_add=True)
     ip = models.CharField(_('ip address'), max_length=40)
     modification = models.TextField(_('modification'), blank=True)

@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='committeemembership',
             name='person',
-            field=models.ForeignKey(related_name='committee_memberships', to='ldb.Person'),
+            field=models.ForeignKey(related_name='committee_memberships', to='ldb.Person', on_delete=models.CASCADE),
         ),
     ]

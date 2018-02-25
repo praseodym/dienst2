@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # The Admin site:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
 
     # The signin page
     url(r'^accounts/login/$', auth_views.login, name='login'),

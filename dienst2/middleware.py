@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
-from django.core.urlresolvers import resolve
+from django.urls import resolve
 
 
 class RequireLoginMiddleware(object):

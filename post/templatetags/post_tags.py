@@ -6,7 +6,7 @@ from django.utils.encoding import force_str
 register = template.Library()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def group_by_description(context, items):
     filter = context.get('filter')
 

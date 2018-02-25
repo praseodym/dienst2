@@ -339,12 +339,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='modification',
             name='person',
-            field=models.ForeignKey(to='ldb.Person'),
+            field=models.ForeignKey(to='ldb.Person', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='committeemembership',
             name='person',
-            field=models.ForeignKey(to='ldb.Person'),
+            field=models.ForeignKey(to='ldb.Person', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='committee',
