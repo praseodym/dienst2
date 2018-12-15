@@ -18,6 +18,7 @@ from ldb.filters import CommitteeMembershipFilter
 from ldb.forms import PersonForm, MemberFormSet, StudentFormSet, AlumnusFormSet, EmployeeFormSet, \
     CommitteeMembershipFormSet
 from ldb.models import Organization, Person, CommitteeMembership
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 
 class IndexView(TemplateView):
@@ -35,14 +36,15 @@ class ResultsView(TemplateView):
     def get_results(self):
         q = self.request.GET.get('q')
         if q is not None:
-            search_term = convert_free_search(q)
-            return SearchQuerySet().models(Person, Organization).filter(
-                SQ(text=Raw(search_term)) |
-                SQ(name=Raw(search_term)) |
-                SQ(address=Raw(search_term)) |
-                SQ(contact=Raw(search_term)) |
-                SQ(ldap_username=Raw(search_term))
-            )
+            vector = SearchVector('ldap_username', 'netid', weight='A', config='dutch') + \
+                SearchVector('firstname', 'preposition', 'surname', weight='B', config='dutch') + \
+                SearchVector('street_name', 'house_number',
+                             'address_2', 'address_3',
+                             'postcode', 'city', 'country',
+                             'email', 'phone_fixed', 'phone_mobile', weight='C', config='dutch')
+            query = SearchQuery(q, config='dutch')
+            res = Person.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.1).order_by('-rank')
+            return res
         return []
 
     def get_context_data(self, **kwargs):
